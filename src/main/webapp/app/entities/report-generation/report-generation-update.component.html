@@ -1,0 +1,93 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-report-generation-heading">Create or edit a Report Generation</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!reportGeneration.id">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="reportGeneration.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_description">Description</label>
+                    <input type="text" class="form-control" name="description" id="field_description"
+                        [(ngModel)]="reportGeneration.description" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_status">Status</label>
+                    <select class="form-control" name="status" [(ngModel)]="reportGeneration.status" id="field_status" >
+                        <option value="PENDING">PENDING</option>
+                        <option value="GENERATING">GENERATING</option>
+                        <option value="GENERATED">GENERATED</option>
+                        <option value="ERROR">ERROR</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_fileType">File Type</label>
+                    <select class="form-control" name="fileType" [(ngModel)]="reportGeneration.fileType" id="field_fileType" >
+                        <option value="CSV">CSV</option>
+                        <option value="PDF">PDF</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_fullPath">Full Path</label>
+                    <input type="text" class="form-control" name="fullPath" id="field_fullPath"
+                        [(ngModel)]="reportGeneration.fullPath" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_isLocked">Is Locked</label>
+                    <input type="checkbox" class="form-control" name="isLocked" id="field_isLocked"
+                        [(ngModel)]="reportGeneration.isLocked" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_creationDate">Creation Date</label>
+                    <div class="d-flex">
+                        <input id="field_creationDate" type="datetime-local" class="form-control" name="creationDate" [(ngModel)]="creationDate"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_creator">Creator</label>
+                    <input type="text" class="form-control" name="creator" id="field_creator"
+                        [(ngModel)]="reportGeneration.creator" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_startedOn">Started On</label>
+                    <div class="d-flex">
+                        <input id="field_startedOn" type="datetime-local" class="form-control" name="startedOn" [(ngModel)]="startedOn"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_completionDate">Completion Date</label>
+                    <div class="d-flex">
+                        <input id="field_completionDate" type="datetime-local" class="form-control" name="completionDate" [(ngModel)]="completionDate"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_comment">Comment</label>
+                    <input type="text" class="form-control" name="comment" id="field_comment"
+                        [(ngModel)]="reportGeneration.comment" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_report">Report</label>
+                    <select class="form-control" id="field_report" name="report" [(ngModel)]="reportGeneration.reportId" >
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="reportOption.id" *ngFor="let reportOption of reports; trackBy: trackReportById">{{reportOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
