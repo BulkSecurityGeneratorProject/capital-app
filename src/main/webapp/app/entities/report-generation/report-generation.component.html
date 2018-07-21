@@ -1,0 +1,86 @@
+<div>
+    <h2 id="page-heading">
+        <span>Report Generations</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-report-generation" [routerLink]="['/report-generation/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span >
+            Create new Report Generation
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="reportGenerations">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="description"><span>Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="status"><span>Status</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="fileType"><span>File Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="fullPath"><span>Full Path</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="isLocked"><span>Is Locked</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="creationDate"><span>Creation Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="creator"><span>Creator</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="startedOn"><span>Started On</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="completionDate"><span>Completion Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="comment"><span>Comment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="reportId"><span>Report</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let reportGeneration of reportGenerations ;trackBy: trackId">
+                <td><a [routerLink]="['/report-generation', reportGeneration.id, 'view' ]">{{reportGeneration.id}}</a></td>
+                <td>{{reportGeneration.description}}</td>
+                <td>{{reportGeneration.status}}</td>
+                <td>{{reportGeneration.fileType}}</td>
+                <td>{{reportGeneration.fullPath}}</td>
+                <td>{{reportGeneration.isLocked}}</td>
+                <td>{{reportGeneration.creationDate | date:'medium'}}</td>
+                <td>{{reportGeneration.creator}}</td>
+                <td>{{reportGeneration.startedOn | date:'medium'}}</td>
+                <td>{{reportGeneration.completionDate | date:'medium'}}</td>
+                <td>{{reportGeneration.comment}}</td>
+                <td>
+                    <div *ngIf="reportGeneration.reportId">
+                        <a [routerLink]="['../report', reportGeneration.reportId , 'view' ]" >{{reportGeneration.reportId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/report-generation', reportGeneration.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/report-generation', reportGeneration.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'report-generation/'+ reportGeneration.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="reportGenerations && reportGenerations.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

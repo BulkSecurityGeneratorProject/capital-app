@@ -1,0 +1,69 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="reportGeneration">
+            <h2><span>Report Generation</span> {{reportGeneration.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{reportGeneration.description}}</span>
+                </dd>
+                <dt><span>Status</span></dt>
+                <dd>
+                    <span>{{reportGeneration.status}}</span>
+                </dd>
+                <dt><span>File Type</span></dt>
+                <dd>
+                    <span>{{reportGeneration.fileType}}</span>
+                </dd>
+                <dt><span>Full Path</span></dt>
+                <dd>
+                    <span>{{reportGeneration.fullPath}}</span>
+                </dd>
+                <dt><span>Is Locked</span></dt>
+                <dd>
+                    <span>{{reportGeneration.isLocked}}</span>
+                </dd>
+                <dt><span>Creation Date</span></dt>
+                <dd>
+                    <span>{{reportGeneration.creationDate}}</span>
+                </dd>
+                <dt><span>Creator</span></dt>
+                <dd>
+                    <span>{{reportGeneration.creator}}</span>
+                </dd>
+                <dt><span>Started On</span></dt>
+                <dd>
+                    <span>{{reportGeneration.startedOn}}</span>
+                </dd>
+                <dt><span>Completion Date</span></dt>
+                <dd>
+                    <span>{{reportGeneration.completionDate}}</span>
+                </dd>
+                <dt><span>Comment</span></dt>
+                <dd>
+                    <span>{{reportGeneration.comment}}</span>
+                </dd>
+                <dt><span>Report</span></dt>
+                <dd>
+                    <div *ngIf="reportGeneration.reportId">
+                        <a [routerLink]="['/report', reportGeneration.reportId, 'view']">{{reportGeneration.reportId}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/report-generation', reportGeneration.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

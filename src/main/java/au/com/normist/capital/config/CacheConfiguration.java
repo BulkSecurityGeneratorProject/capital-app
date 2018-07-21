@@ -38,6 +38,8 @@ public class CacheConfiguration {
             cm.createCache(au.com.normist.capital.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(au.com.normist.capital.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(au.com.normist.capital.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(au.com.normist.capital.domain.Report.class.getName(), jcacheConfiguration);
+            cm.createCache(au.com.normist.capital.domain.ReportGeneration.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
