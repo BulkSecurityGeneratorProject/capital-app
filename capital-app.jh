@@ -1,0 +1,48 @@
+entity Report {
+    id Long,
+    name String,
+    description String,
+    displayOrder Integer
+}
+
+entity ReportGeneration {
+	id Long,
+    description String,
+	status ReportGenerationStatus,
+    fileType ReportFileType,
+    fullPath String,
+    isLocked Boolean,
+    
+    creationDate Instant,
+    creator String,
+    startedOn Instant,
+    completionDate Instant,
+
+    comment String
+}
+
+relationship ManyToOne {
+  ReportGeneration{report} to Report
+}
+
+enum ReportGenerationStatus {
+	PENDING, GENERATING, GENERATED, ERROR
+}
+
+enum ReportFileType {
+	CSV, PDF
+}
+
+
+// Set pagination options
+paginate ReportGeneration, Report with pagination
+
+dto * with mapstruct
+
+// enable filter
+filter ReportGeneration, Report
+// filter * except StaticSource
+
+// Set service options to all except few
+service all with serviceImpl
+
