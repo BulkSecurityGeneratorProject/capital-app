@@ -130,3 +130,6 @@ jhipster:
 # ===================================================================
 
 # application:
+application:
+    capital:
+        connection-string: ""
