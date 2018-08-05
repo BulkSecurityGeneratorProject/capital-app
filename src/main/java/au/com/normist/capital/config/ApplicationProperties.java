@@ -11,4 +11,23 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
+
+    private final CapitalConfig capital = new CapitalConfig();
+
+    public static class CapitalConfig {
+        public String connectionString;
+
+        public String getConnectionString() {
+            return connectionString;
+        }
+
+        public void setConnectionString(String connectionString) {
+            this.connectionString = connectionString;
+        }
+
+    }
+
+    public CapitalConfig getCapital() {
+        return capital;
+    }
 }
