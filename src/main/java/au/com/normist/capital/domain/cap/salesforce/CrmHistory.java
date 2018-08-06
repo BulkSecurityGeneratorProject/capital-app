@@ -5,6 +5,7 @@ import au.com.normist.capital.domain.cap.CapBaseModel;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
+//@Entity
 @Table(name = "CRMHISTORY")
 public class CrmHistory extends CapBaseModel {
 

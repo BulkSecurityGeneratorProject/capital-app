@@ -2,9 +2,7 @@ package au.com.normist.capital;
 
 import au.com.normist.capital.config.ApplicationProperties;
 import au.com.normist.capital.config.DefaultProfileUtil;
-
 import io.github.jhipster.config.JHipsterConstants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -14,15 +12,21 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Collection;
+
+import static java.lang.System.getProperty;
+import static java.nio.file.Files.createTempDirectory;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 public class CapitalappApp {
 
     private static final Logger log = LoggerFactory.getLogger(CapitalappApp.class);
+
+    private static final String DUMP_CLASSES_PROP = "jdk.internal.lambda.dumpProxyClasses";
 
     private final Environment env;
 
@@ -56,6 +60,7 @@ public class CapitalappApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        init();
         SpringApplication app = new SpringApplication(CapitalappApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
@@ -81,5 +86,17 @@ public class CapitalappApp {
             hostAddress,
             env.getProperty("server.port"),
             env.getActiveProfiles());
+    }
+
+    private static void init() {
+        /* Initializes the jdk.internal.lambda.dumpProxyClasses system property with a temporary directory.
+         * See https://bugs.openjdk.java.net/browse/JDK-8023524
+         */
+        try {
+            if (getProperty(DUMP_CLASSES_PROP) == null)
+                System.setProperty(DUMP_CLASSES_PROP, createTempDirectory("lambda").toString());
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

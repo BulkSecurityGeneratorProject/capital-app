@@ -3,10 +3,12 @@ package au.com.normist.capital.domain.cap.catalog;
 import org.joda.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+@Entity
 @Table(name = "STAUX000")
 public class Staux000 {
 

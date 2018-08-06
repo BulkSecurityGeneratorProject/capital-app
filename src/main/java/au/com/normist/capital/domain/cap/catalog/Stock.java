@@ -3,10 +3,12 @@ package au.com.normist.capital.domain.cap.catalog;
 import au.com.normist.capital.domain.cap.CapBaseModel;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+@Entity
 @Table(name = "STOCK")
 public class Stock extends CapBaseModel {
 
