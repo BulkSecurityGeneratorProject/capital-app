@@ -1,9 +1,14 @@
 package au.com.normist.capital.repository.cap.sqlwriter.testutils;
 
-import javax.persistence.*;
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
-@Entity
+@PersistEntity
 @Table(name = "simple_with_jpa")
 public class SimpleJpa {
 

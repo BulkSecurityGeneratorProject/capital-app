@@ -1,9 +1,14 @@
 package au.com.normist.capital.repository.cap.dbutilsjpa.testutils;
 
-import javax.persistence.*;
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
+
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.List;
 
-@Entity
+@PersistEntity
 public class EntityWithRelations {
 
   private Long pk;

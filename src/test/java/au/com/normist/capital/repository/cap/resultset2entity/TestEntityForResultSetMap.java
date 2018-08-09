@@ -1,9 +1,10 @@
 package au.com.normist.capital.repository.cap.resultset2entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
 
-@Entity
+import javax.persistence.Column;
+
+@PersistEntity
 public class TestEntityForResultSetMap {
     @Column(name = "id")
     private Integer id;

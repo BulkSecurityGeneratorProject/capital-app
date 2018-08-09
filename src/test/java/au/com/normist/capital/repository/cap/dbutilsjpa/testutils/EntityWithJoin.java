@@ -1,12 +1,13 @@
 package au.com.normist.capital.repository.cap.dbutilsjpa.testutils;
 
-import javax.persistence.Entity;
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-@Entity
+@PersistEntity
 public class EntityWithJoin {
 
   @Id

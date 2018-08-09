@@ -1,9 +1,10 @@
 package au.com.normist.capital.repository.cap.dbutilsjpa.testutils;
 
-import javax.persistence.Entity;
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
+
 import javax.persistence.Id;
 
-@Entity
+@PersistEntity
 public class SimpleEntity {
 
   private static final Object CONSTANT = new Object(); 

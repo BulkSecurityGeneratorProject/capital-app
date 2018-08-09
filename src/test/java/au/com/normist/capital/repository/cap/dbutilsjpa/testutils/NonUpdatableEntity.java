@@ -1,10 +1,11 @@
 package au.com.normist.capital.repository.cap.dbutilsjpa.testutils;
 
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
+
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
+@PersistEntity
 public class NonUpdatableEntity {
 
   @Id
