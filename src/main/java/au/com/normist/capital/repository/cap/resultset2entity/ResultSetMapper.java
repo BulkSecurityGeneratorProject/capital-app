@@ -1,10 +1,10 @@
 package au.com.normist.capital.repository.cap.resultset2entity;
 
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -24,7 +24,7 @@ public class ResultSetMapper<T> {
             // make sure resultset is not null
             if (rs != null) {
                 // check if outputClass has 'Entity' annotation
-                if (outputClass.isAnnotationPresent(Entity.class)) {
+                if (outputClass.isAnnotationPresent(PersistEntity.class)) {
                     // get the resultset metadata
                     ResultSetMetaData rsmd = rs.getMetaData();
                     // get all the attributes of outputClass

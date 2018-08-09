@@ -1,5 +1,6 @@
 package au.com.normist.capital.repository.cap.dbutilsjpa;
 
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
 import org.apache.commons.dbutils.BeanProcessor;
 
 import javax.persistence.Entity;
@@ -144,7 +145,7 @@ public class JpaBeanProcessor extends BeanProcessor {
     }
 
     private <T> void checkIsEntity(Class<T> type) {
-        if (!type.isAnnotationPresent(Entity.class)) {
+        if (!type.isAnnotationPresent(Entity.class) && !type.isAnnotationPresent(PersistEntity.class)) {
             throw new IllegalArgumentException(type.getName() + " is not a JPA @Entity");
         }
     }

@@ -1,5 +1,7 @@
 package au.com.normist.capital.repository.cap.dbutilsjpa;
 
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
+
 import javax.persistence.*;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -97,7 +99,7 @@ public class Entities {
     }
 
     public static boolean isMapped(Class<?> objectClass) {
-        return objectClass.isAnnotationPresent(Entity.class) || objectClass.isAnnotationPresent(MappedSuperclass.class);
+        return objectClass.isAnnotationPresent(Entity.class) || objectClass.isAnnotationPresent(PersistEntity.class) || objectClass.isAnnotationPresent(MappedSuperclass.class);
     }
 
     public static boolean isStatic(Member member) {
