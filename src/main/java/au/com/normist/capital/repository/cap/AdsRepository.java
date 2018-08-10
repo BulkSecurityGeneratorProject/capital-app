@@ -20,7 +20,7 @@ public abstract class AdsRepository<T extends CapBaseModel> implements IReposito
     private QueryRunner queryRunner;
     private JpaQueryRunner jpaQueryRunner;
 
-//    public AdsRepository() {}
+    public AdsRepository() {}
 
     public AdsRepository (AdsConnDriver adsConnDriver, Class<T> objClass) {
         Preconditions.checkNotNull(adsConnDriver);
@@ -29,7 +29,8 @@ public abstract class AdsRepository<T extends CapBaseModel> implements IReposito
         this.adsConnDriver = adsConnDriver;
         this.objClass = objClass;
 
-        queryRunner = new QueryRunner();
+        // NOTE: ADS Driver doesn't support ParameterMetaData, must pass 'true' parameter.
+        queryRunner = new QueryRunner(true);
         jpaQueryRunner = new JpaQueryRunner(queryRunner, adsConnDriver);
     }
 
