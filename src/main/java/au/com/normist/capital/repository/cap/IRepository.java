@@ -5,16 +5,16 @@ import au.com.normist.capital.domain.cap.CapBaseModel;
 import java.util.Collection;
 
 public interface IRepository<T extends CapBaseModel> {
-    T GetById(String id);
+    T getById(String id);
 
-    Collection<T> GetByIds(Collection<String> ids);
+    Collection<T> getByIds(Collection<String> ids);
 
-    Collection<T> GetAll();
+    Collection<T> getAll();
 
-    void Update(T record);
+    void update(T record);
 
-    int Delete(T record);
+    int delete(T record);
 
-    int Insert(T record);
+    int insert(T record);
 
 }

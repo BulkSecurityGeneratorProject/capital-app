@@ -1,5 +1,6 @@
 package au.com.normist.capital.domain.cap.catalog;
 
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
 import au.com.normist.capital.domain.cap.CapBaseModel;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+@PersistEntity
 @Table(name = "STOCK")
 public class Stock extends CapBaseModel {
 
@@ -79,7 +81,7 @@ public class Stock extends CapBaseModel {
     /**
      * stock id
      */
-    @Column(name = "NUMBER", unique = true)
+    @Column(name = "NUMBER")
     @Id
     private String stockId;
 

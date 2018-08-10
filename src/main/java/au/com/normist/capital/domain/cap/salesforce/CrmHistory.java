@@ -1,10 +1,12 @@
 package au.com.normist.capital.domain.cap.salesforce;
 
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
 import au.com.normist.capital.domain.cap.CapBaseModel;
 
 import javax.persistence.Table;
 import java.time.LocalDate;
 
+@PersistEntity
 @Table(name = "CRMHISTORY")
 public class CrmHistory extends CapBaseModel {
 

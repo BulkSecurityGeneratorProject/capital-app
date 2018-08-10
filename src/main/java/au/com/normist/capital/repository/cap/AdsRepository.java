@@ -1,6 +1,9 @@
 package au.com.normist.capital.repository.cap;
 
 import au.com.normist.capital.domain.cap.CapBaseModel;
+import au.com.normist.capital.repository.cap.dbutilsjpa.JpaQueryRunner;
+import com.google.common.base.Preconditions;
+import org.apache.commons.dbutils.QueryRunner;
 
 import java.util.Collection;
 
@@ -11,40 +14,53 @@ public abstract class AdsRepository<T extends CapBaseModel> implements IReposito
 
     private AdsConnDriver adsConnDriver;
 
+    // corresponding class for generic type T
+    private Class<T> objClass;
+
+    private QueryRunner queryRunner;
+    private JpaQueryRunner jpaQueryRunner;
+
     public AdsRepository() {}
 
-    public AdsRepository (AdsConnDriver adsConnDriver) {
+    public AdsRepository (AdsConnDriver adsConnDriver, Class<T> objClass) {
+        Preconditions.checkNotNull(adsConnDriver);
+        Preconditions.checkNotNull(objClass);
+
         this.adsConnDriver = adsConnDriver;
+        this.objClass = objClass;
+
+        // NOTE: ADS Driver doesn't support ParameterMetaData, must pass 'true' parameter.
+        queryRunner = new QueryRunner(true);
+        jpaQueryRunner = new JpaQueryRunner(queryRunner, adsConnDriver);
     }
 
+    @Override
+    public T getById(String id) {
+        return jpaQueryRunner.query(objClass, id);
+    }
 
     @Override
-    public T GetById(String id) {
+    public Collection<T> getByIds(Collection<String> ids) {
         return null;
     }
 
     @Override
-    public Collection<T> GetByIds(Collection<String> ids) {
+    public Collection<T> getAll() {
         return null;
     }
 
     @Override
-    public Collection<T> GetAll() {
-        return null;
-    }
-
-    @Override
-    public void Update(T record) {
+    public void update(T record) {
 
     }
 
     @Override
-    public int Delete(T record) {
+    public int delete(T record) {
         return 0;
     }
 
     @Override
-    public int Insert(T record) {
+    public int insert(T record) {
         return 0;
     }
 }

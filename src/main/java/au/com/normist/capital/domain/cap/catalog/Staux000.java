@@ -1,5 +1,6 @@
 package au.com.normist.capital.domain.cap.catalog;
 
+import au.com.normist.capital.core.annotation.cap.PersistEntity;
 import org.joda.time.LocalDate;
 
 import javax.persistence.Column;
@@ -7,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
+@PersistEntity
 @Table(name = "STAUX000")
 public class Staux000 {
 

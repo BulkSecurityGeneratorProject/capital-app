@@ -3,6 +3,7 @@ package au.com.normist.capital.repository.cap;
 import au.com.normist.capital.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import static java.sql.DriverManager.getConnection;
 
 @Component("AdsConnDriver")
+@DependsOn("LambdaToAdsSql")
 public class AdsConnDriver implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggerFactory.getLogger(AdsConnDriver.class);
