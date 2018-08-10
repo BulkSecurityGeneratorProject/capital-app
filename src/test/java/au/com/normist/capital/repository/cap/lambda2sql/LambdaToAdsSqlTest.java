@@ -1,11 +1,10 @@
 package au.com.normist.capital.repository.cap.lambda2sql;
 
+import org.danekja.java.util.function.serializable.SerializablePredicate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,10 +24,6 @@ public class LambdaToAdsSqlTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void convertToAdsSql() {
-
-    }
 
     @Test
     public void testComparisons() throws Exception {
@@ -54,7 +49,7 @@ public class LambdaToAdsSqlTest {
     }
 
 
-    private void assertEqual(String expectedSql, Predicate<TestPerson> p) {
+    private void assertEqual(String expectedSql, SerializablePredicate<TestPerson> p) {
         String sql = LambdaToAdsSql.convertToAdsSql(p);
         assertEquals(expectedSql, sql);
     }
