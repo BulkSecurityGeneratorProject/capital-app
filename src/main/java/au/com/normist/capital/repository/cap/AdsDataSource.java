@@ -20,8 +20,8 @@ public class AdsDataSource {
 //            log.error("error in ADS datasource: ", e);
 //        }
 //
-//        config.setJdbcUrl("jdbc:extendedsystems:advantage://10.220.31.24:6262/CapitalSvcs/CAPITAL/Bo-Test/BoTest.add;TableType=CDX;ShowDeleted=False;LockType=COMPATIBLE");
-//        config.setUsername("AdsSys");
+//        config.setJdbcUrl("");
+//        config.setUsername("");
 //        config.setPassword("");
 //        config.addDataSourceProperty("cachePrepStmts", "true");
 //        config.addDataSourceProperty("prepStmtCacheSize", "250");
