@@ -138,12 +138,7 @@ public class JpaQueryRunner {
     public <T> T query(Class<T> entityClass, Object primaryKey) {
         Connection conn = null;
         try {
-            log.debug("query for class: " + entityClass + " .KEY: " + primaryKey);
             conn = adsConnDriver.getDbConnection();
-            log.info(("db conn: " + conn));
-            T entityRetrieved = queryRunner.query(conn, sqlWriter.selectById(entityClass), new BeanHandler<>(entityClass, rowProcessor), primaryKey);
-
-            log.info("retrieved object");
             return entityClass.cast(
                 queryRunner.query(conn, sqlWriter.selectById(entityClass), new BeanHandler<>(entityClass, rowProcessor), primaryKey)
             );
