@@ -1,14 +1,15 @@
 package au.com.normist.capital.repository.cap.dbutilsjpa;
 
-import org.apache.commons.dbutils.BasicRowProcessor;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
-import org.apache.commons.dbutils.RowProcessor;
+import au.com.normist.capital.repository.cap.AdsConnDriver;
+import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import java.lang.reflect.*;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * Immutable and thread-safe.
  */
 public class JpaQueryRunner {
+    private static final Logger log = LoggerFactory.getLogger(JpaQueryRunner.class);
 
     public static final ScalarHandler<Long> DEFAULT_GENERATED_KEYS_HANDLER = new ScalarHandler<>();
     public static final SqlWriter DEFAULT_SQL_WRITER = new SqlWriter();
@@ -43,11 +45,14 @@ public class JpaQueryRunner {
         }
     };
 
+
     private final QueryRunner queryRunner;
     private final SqlWriter sqlWriter;
     private final NewEntityTester entityTester;
     private final RowProcessor rowProcessor;
     private final ResultSetHandler<?> generatedKeysHandler;
+
+    private AdsConnDriver adsConnDriver;
 
     public static class Builder {
 
@@ -55,9 +60,16 @@ public class JpaQueryRunner {
         private NewEntityTester entityTester;
         private ResultSetHandler<?> generatedKeysHandler;
         private RowProcessor rowProcessor;
+        private AdsConnDriver adsConnDriver;
 
         public JpaQueryRunner build(QueryRunner queryRunner) {
-            return new JpaQueryRunner(queryRunner, choose(this.sqlWriter, DEFAULT_SQL_WRITER), choose(this.entityTester, DEFAULT_ENTITY_TESTER), choose(this.rowProcessor, DEFAULT_ROW_PROCESSOR), choose(this.generatedKeysHandler, DEFAULT_GENERATED_KEYS_HANDLER));
+            return new JpaQueryRunner(queryRunner,
+                choose(this.sqlWriter, DEFAULT_SQL_WRITER),
+                choose(this.entityTester, DEFAULT_ENTITY_TESTER),
+                choose(this.rowProcessor, DEFAULT_ROW_PROCESSOR),
+                choose(this.generatedKeysHandler, DEFAULT_GENERATED_KEYS_HANDLER),
+                this.adsConnDriver
+            );
         }
 
         public Builder sqlWriter(SqlWriter sqlWriter) {
@@ -80,22 +92,32 @@ public class JpaQueryRunner {
             return this;
         }
 
+        public Builder adsConnDriver(AdsConnDriver adsConnDriver) {
+            this.adsConnDriver = adsConnDriver;
+            return this;
+        }
+
         private <T> T choose(T value, T fallback) {
             return value != null ? value : fallback;
         }
     }
 
     public JpaQueryRunner(QueryRunner queryRunner) {
-        this(queryRunner, DEFAULT_SQL_WRITER, DEFAULT_ENTITY_TESTER, DEFAULT_ROW_PROCESSOR, DEFAULT_GENERATED_KEYS_HANDLER);
+        this(queryRunner, DEFAULT_SQL_WRITER, DEFAULT_ENTITY_TESTER, DEFAULT_ROW_PROCESSOR, DEFAULT_GENERATED_KEYS_HANDLER, null);
+    }
+
+    public JpaQueryRunner(QueryRunner queryRunner, AdsConnDriver adsConnDriver) {
+        this(queryRunner, DEFAULT_SQL_WRITER, DEFAULT_ENTITY_TESTER, DEFAULT_ROW_PROCESSOR, DEFAULT_GENERATED_KEYS_HANDLER, adsConnDriver);
     }
 
     public JpaQueryRunner(QueryRunner queryRunner, SqlWriter sqlWriter, NewEntityTester entityTester,
-                          RowProcessor rowProcessor, ResultSetHandler<?> generatedKeysHandler) {
+                          RowProcessor rowProcessor, ResultSetHandler<?> generatedKeysHandler, AdsConnDriver adsConnDriver) {
         this.queryRunner = queryRunner;
         this.sqlWriter = sqlWriter;
         this.entityTester = entityTester;
         this.rowProcessor = rowProcessor;
         this.generatedKeysHandler = generatedKeysHandler;
+        this.adsConnDriver = adsConnDriver;
     }
 
     /**
@@ -114,11 +136,21 @@ public class JpaQueryRunner {
      *           primary key or is null
      */
     public <T> T query(Class<T> entityClass, Object primaryKey) {
+        Connection conn = null;
         try {
-            return entityClass.cast(queryRunner.query(sqlWriter.selectById(entityClass), new BeanHandler<T>(
-                entityClass, rowProcessor), primaryKey));
+            log.debug("query for class: " + entityClass + " .KEY: " + primaryKey);
+            conn = adsConnDriver.getDbConnection();
+            log.info(("db conn: " + conn));
+            T entityRetrieved = queryRunner.query(conn, sqlWriter.selectById(entityClass), new BeanHandler<>(entityClass, rowProcessor), primaryKey);
+
+            log.info("retrieved object");
+            return entityClass.cast(
+                queryRunner.query(conn, sqlWriter.selectById(entityClass), new BeanHandler<>(entityClass, rowProcessor), primaryKey)
+            );
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            DbUtils.closeQuietly(conn);
         }
     }
 
@@ -200,4 +232,13 @@ public class JpaQueryRunner {
     private boolean isNotSettable(boolean isNew, AccessibleObject accessibleObject) {
         return (isNew && accessibleObject.isAnnotationPresent(Column.class) && !accessibleObject.getAnnotation(Column.class).insertable()) || (!isNew && accessibleObject.isAnnotationPresent(Column.class) && !accessibleObject.getAnnotation(Column.class).updatable());
     }
+
+    public AdsConnDriver getAdsConnDriver() {
+        return adsConnDriver;
+    }
+
+    public void setAdsConnDriver(AdsConnDriver adsConnDriver) {
+        this.adsConnDriver = adsConnDriver;
+    }
+
 }

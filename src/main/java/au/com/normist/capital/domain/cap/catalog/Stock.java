@@ -81,7 +81,7 @@ public class Stock extends CapBaseModel {
     /**
      * stock id
      */
-    @Column(name = "NUMBER", unique = true)
+    @Column(name = "NUMBER")
     @Id
     private String stockId;
 
